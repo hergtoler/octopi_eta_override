@@ -22,7 +22,7 @@ p = re.compile(
 
 
 def pETAeveryLine(comm, line, *args, **kwargs):
-    global eta, silentSearch, normalSearch, r, s, ts, oldZ
+    global eta, silentMode, silentSearch, normalSearch, r, s, ts, oldZ
     
     if silentSearch.search(line):
         silentMode = 1
@@ -36,6 +36,14 @@ def pETAeveryLine(comm, line, *args, **kwargs):
     if m:
         eta = int(m.group(1)) * 60
         ts = int(time.time())
+        self._logger.debug(
+            "Received progress Message - silentMode: "
+            + str(silentMode)
+            + ", eta: "
+            + str(eta)
+            + ", ts: "
+            + str(ts)
+        )
         comm._sendCommand("M114")
         #note that M919 is only in custom firmware at https://github.com/hergtoler/Prusa-Firmware/tree/MK3_silent_mode_message
         comm._sendCommand("M919")
